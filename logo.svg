@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 170" width="540" height="170">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Libre+Baskerville:ital@1&amp;display=swap');
+      .she {
+        font-family: 'Libre Baskerville', Georgia, serif;
+        font-style: italic;
+        font-weight: 400;
+        font-size: 63px;
+        fill: #F6EB9A;
+        letter-spacing: -1px;
+      }
+      .permits {
+        font-family: 'Inter', Arial, sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 62px;
+        fill: #FAFAF7;
+        letter-spacing: -2px;
+      }
+      .tagline {
+        font-family: 'Inter', Arial, sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 10px;
+        fill: rgba(255,255,255,0.75);
+        letter-spacing: 3px;
+      }
+    </style>
+  </defs>
+  <rect width="540" height="170" fill="#1F4FD8"/>
+  <text x="50%" y="98" text-anchor="middle" font-size="0">
+    <tspan class="she">she</tspan><tspan class="permits" dx="-2">PERMITS</tspan>
+  </text>
+  <text class="tagline" x="50%" y="116" text-anchor="middle">CONSTRUCTION COMPLIANCE SYSTEMS</text>
+</svg>

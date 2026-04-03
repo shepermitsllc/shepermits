@@ -216,6 +216,54 @@ You have worked inside high-liability environments where mistakes are expensive.
                 st.error(f"Error: {e}")
     else:
         st.warning("Please enter a question first.")
+# Renewal Timeline Engine
+st.divider()
+st.markdown("<h4 style='color:#F6EB9A; font-family:Georgia,serif; font-weight:700; margin-bottom:-1rem;'>Renewal Timeline Engine</h4>", unsafe_allow_html=True)
+st.markdown("<p style='color:#a8c4ff; font-size:0.9rem; margin-bottom:1rem;'>Select a license to generate a backwards renewal timeline with financial review milestones and a CPA preparation checklist.</p>", unsafe_allow_html=True)
+
+license_options = df.apply(lambda row: f"{row['License Type']} — {row['State']} (expires {row['Expires'].strftime('%m/%d/%Y') if pd.notna(row['Expires']) else 'unknown'})", axis=1).tolist()
+selected_license_idx = st.selectbox("Select a license", range(len(license_options)), format_func=lambda x: license_options[x], key="timeline_license")
+
+if st.button("Generate Renewal Timeline", key="timeline_button"):
+    selected_row = df.iloc[selected_license_idx]
+    license_type = selected_row["License Type"]
+    state = selected_row["State"]
+    expires = selected_row["Expires"].strftime("%m/%d/%Y") if pd.notna(selected_row["Expires"]) else "unknown"
+    days_remaining = int(selected_row["Days Remaining"]) if pd.notna(selected_row["Days Remaining"]) else "unknown"
+
+    timeline_prompt = f"""You are a construction licensing compliance advisor who has managed multi-state contractor renewals. You know that missing a renewal deadline can shut down a project and trigger real liability.
+
+The contractor needs to renew the following license:
+- License Type: {license_type}
+- State: {state}
+- Expiration Date: {expires}
+- Days Remaining: {days_remaining}
+
+Do the following:
+1. State whether this license requires a financial review or audit for renewal in {state}. Be specific.
+2. If a financial review IS required, work backwards from the expiration date and provide a realistic timeline with specific target dates for: starting document collection, engaging a CPA, completing the financial review, submitting the renewal application, and the final deadline.
+3. Provide a preparation checklist of what the contractor should gather before engaging a CPA — typical items include financial statements, P&L, balance sheet, bonding information, insurance certificates, and any state-specific documents.
+4. Note anything specific to {state} that could slow the process down.
+
+Write in plain prose. Be direct and specific. No hedging everything. Sound like someone who has actually done this before. Under 250 words."""
+
+    with st.spinner("Building renewal timeline..."):
+        try:
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": timeline_prompt}],
+                max_tokens=500
+            )
+            timeline_result = response.choices[0].message.content
+            st.markdown(f"""
+                <div style="background:#2d5be3; border-left:4px solid #F6EB9A; border-radius:8px; padding:1.25rem 1.5rem; margin-top:1rem;">
+                    <div style="font-family:Inter,sans-serif; font-size:0.72rem; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:#F6EB9A; margin-bottom:0.75rem;">Renewal Timeline — {license_type} ({state})</div>
+                    <div style="font-family:Inter,sans-serif; font-size:0.95rem; color:#fafaf7; line-height:1.7;">{timeline_result}</div>
+                    <div style="font-family:Inter,sans-serif; font-size:0.72rem; color:#a8c4ff; margin-top:0.75rem;">⚠️ AI-generated guidance. Verify all requirements directly with your state licensing board and CPA.</div>
+                </div>
+            """, unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"Error: {e}")
 st.markdown(
     "<p style='font-family:Inter; color:#a8c4ff; font-size:0.8rem; text-align:center;'>shePERMITS &nbsp;|&nbsp; Automation isn't efficiency — it's insurance.</p>",
     unsafe_allow_html=True

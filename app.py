@@ -218,8 +218,7 @@ You have worked inside high-liability environments where mistakes are expensive.
         st.warning("Please enter a question first.")
 # Renewal Timeline Engine
 st.divider()
-st.markdown("<h4 style='color:#F6EB9A; font-family:Georgia,serif; font-weight:700; margin-bottom:-1rem;'>Renewal Timeline Engine</h4>", unsafe_allow_html=True)
-st.markdown("<p style='color:#a8c4ff; font-size:0.9rem; margin-bottom:1rem;'>Select a license to generate a backwards renewal timeline with financial review milestones and a CPA preparation checklist.</p>", unsafe_allow_html=True)
+st.markdown("<h4 style='color:#F6EB9A; font-family:Georgia,serif; font-weight:700; margin-bottom:-2rem;'>Renewal Timeline Engine <span style='color:#a8c4ff; font-size:0.85rem; font-family:Inter,sans-serif; font-weight:400;'>— Select a license to generate a backwards renewal timeline with financial review milestones and a CPA checklist.</span></h4>", unsafe_allow_html=True)
 
 license_options = df.apply(lambda row: f"{row['License Type']} — {row['State']} (expires {row['Expires'].strftime('%m/%d/%Y') if pd.notna(row['Expires']) else 'unknown'})", axis=1).tolist()
 selected_license_idx = st.selectbox("Select a license", range(len(license_options)), format_func=lambda x: license_options[x], key="timeline_license")
@@ -264,7 +263,5 @@ Write in plain prose. Be direct and specific. No hedging everything. Sound like 
             """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Error: {e}")
-st.markdown(
-    "<p style='font-family:Inter; color:#a8c4ff; font-size:0.8rem; text-align:center;'>shePERMITS &nbsp;|&nbsp; Automation isn't efficiency — it's insurance.</p>",
-    unsafe_allow_html=True
-)
+st.markdown("<p style='font-family:Inter; color:#a8c4ff; font-size:0.8rem; text-align:center;'>shePERMITS &nbsp;|&nbsp; Automation isn't efficiency — it's insurance.</p>", unsafe_allow_html=True)
+   

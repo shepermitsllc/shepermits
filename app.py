@@ -31,6 +31,13 @@ st.markdown("""
     tbody td * { color: #fafaf7 !important; }
     tbody tr:nth-child(even) td { background-color: rgba(255,255,255,0.03) !important; }
     table, th, td { color: #fafaf7 !important; border-color: rgba(255,255,255,0.1) !important; }
+  
+    div[data-testid="stTextInput"] {
+        margin-top: -1.5rem !important;
+    }
+    section[data-testid="stMain"] div[data-baseweb="select"] {
+        margin-top: -0.75rem !important;
+    }
     footer { visibility: hidden; }
     </style>
 """, unsafe_allow_html=True)
@@ -72,19 +79,20 @@ def get_status(days):
         return "🟢 Active"
 
 df["Risk Status"] = df["Days Remaining"].apply(get_status)
-st.markdown("<h4 style='color:#F6EB9A; font-family:Georgia,serif; font-weight:700; margin-top:-1rem; margin-bottom:-1rem;'>License Dashboard</h4>", unsafe_allow_html=True)
+st.markdown("<h4 style='color:#F6EB9A; font-family:Georgia,serif; font-weight:700; margin-top:0rem; margin-bottom:-1.5rem;'>License Dashboard</h4>", unsafe_allow_html=True)
+st.markdown("<div style='display:flex; gap:48%;'><p style='color:#fafaf7; font-size:0.85rem; font-weight:600; margin-bottom:-1rem;'>Filter by State</p><p style='color:#fafaf7; font-size:0.85rem; font-weight:600; margin-bottom:-1rem;'>Filter by Status</p></div>", unsafe_allow_html=True)
 col_a, col_b = st.columns(2)
 
 with col_a:
     state = st.selectbox(
-        "Filter by State",
+        "",
         ["All"] + sorted(df["State"].dropna().unique().tolist())
     )
     
 
 with col_b:
     status_filter = st.selectbox(
-        "Filter by Status",
+        "",
         ["All", "🔴 Expired", "🟠 Critical", "🟡 Warning", "🟢 Active"]
     )
 
@@ -136,7 +144,7 @@ st.markdown(f"""
 st.divider()
 # AI Risk Check
 st.divider()
-st.markdown("<h4 style='color:#F6EB9A; font-family:Georgia,serif; font-weight:700; margin-top:-1rem; margin-bottom:-2rem;'>Compliance Risk Assessment</h4>", unsafe_allow_html=True)
+st.markdown("<h4 style='color:#F6EB9A; font-family:Georgia,serif; font-weight:700; margin-top:-1rem; margin-bottom:-2.75rem;'>Compliance Risk Assessment</h4>", unsafe_allow_html=True)
 selected_state = st.selectbox(
     "",
     sorted(df["State"].dropna().unique().tolist()),
@@ -218,10 +226,10 @@ You have worked inside high-liability environments where mistakes are expensive.
         st.warning("Please enter a question first.")
 # Renewal Timeline Engine
 st.divider()
-st.markdown("<h4 style='color:#F6EB9A; font-family:Georgia,serif; font-weight:700; margin-bottom:-2rem;'>Renewal Timeline Engine <span style='color:#a8c4ff; font-size:0.85rem; font-family:Inter,sans-serif; font-weight:400;'>— Select a license to generate a backwards renewal timeline with financial review milestones and a CPA checklist.</span></h4>", unsafe_allow_html=True)
+st.markdown("<h4 style='color:#F6EB9A; font-family:Georgia,serif; font-weight:700; margin-bottom:-1.75rem;'>Renewal Timeline Engine <span style='color:#a8c4ff; font-size:0.85rem; font-family:Inter,sans-serif; font-weight:400;'>— "" to generate a backwards renewal timeline with financial review milestones and a CPA checklist.</span></h4>", unsafe_allow_html=True)
 
 license_options = df.apply(lambda row: f"{row['License Type']} — {row['State']} (expires {row['Expires'].strftime('%m/%d/%Y') if pd.notna(row['Expires']) else 'unknown'})", axis=1).tolist()
-selected_license_idx = st.selectbox("Select a license", range(len(license_options)), format_func=lambda x: license_options[x], key="timeline_license")
+selected_license_idx = st.selectbox("", range(len(license_options)), format_func=lambda x: license_options[x], key="timeline_license")
 
 if st.button("Generate Renewal Timeline", key="timeline_button"):
     selected_row = df.iloc[selected_license_idx]

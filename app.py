@@ -169,7 +169,7 @@ Sound like an experienced operator, not a chatbot. Keep it under 150 words."""
             
             
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4o",
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=300
             )
@@ -200,7 +200,7 @@ You have worked inside high-liability environments where mistakes are expensive.
         with st.spinner("Looking that up..."):
             try:
                 response = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                    model="gpt-4o",
                     messages=[{"role": "user", "content": qa_prompt}],
                     max_tokens=400
                 )
@@ -250,7 +250,7 @@ Write in plain prose. Be direct and specific. No hedging everything. Sound like 
     with st.spinner("Building renewal timeline..."):
         try:
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4o",
                 messages=[{"role": "user", "content": timeline_prompt}],
                 max_tokens=500
             )
